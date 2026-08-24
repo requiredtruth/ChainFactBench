@@ -23,7 +23,7 @@ The format follows [EIP-1474 quantity and block-identifier rules](https://eips.e
 Python 3.10+ and the standard library are sufficient:
 
 ```bash
-./doit.sh
+./install.sh
 ```
 
 Expected final output:
@@ -133,7 +133,7 @@ Input files, JSONL lines, case counts, prompts, timeouts, and RPC responses are 
 chainfactbench/     typed capture, validation, RPC, scoring, and CLI modules
 examples/           synthetic bundle, answers, and capture specification
 tests/              unit, CLI, mock-RPC integration, and release-boundary tests
-doit.sh             syntax, full test suite, and offline end-to-end demo
+install.sh             syntax, full test suite, and offline end-to-end demo
 run.sh              location-independent CLI launcher
 PROJECT_SPEC.md     stable scope and acceptance contract
 ```
