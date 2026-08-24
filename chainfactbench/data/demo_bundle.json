@@ -1,0 +1,29 @@
+{
+  "block": {
+    "hash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+    "number": "0x10"
+  },
+  "cases": [
+    {
+      "evaluator": "quantity",
+      "expected": "0x2a",
+      "expected_sha256": "51ee4786c6f009b6c7e5649d02327115ac81c4afaafe51e68d6a4d39bde16963",
+      "id": "synthetic-balance",
+      "method": "eth_getBalance",
+      "params": ["0x0000000000000000000000000000000000000001", "0x10"],
+      "prompt": "Synthetic fixture: report the account balance at the supplied pinned block as a non-negative integer."
+    },
+    {
+      "evaluator": "json_exact",
+      "expected": "0x6000",
+      "expected_sha256": "8f2f82aaf1180ea3e2496fe12d0df6f3579d41aaeab041dad27716602005cfbc",
+      "id": "synthetic-code",
+      "method": "eth_getCode",
+      "params": ["0x0000000000000000000000000000000000000002", "0x10"],
+      "prompt": "Synthetic fixture: return the exact bytecode value at the supplied pinned block."
+    }
+  ],
+  "chain_id": "0x1",
+  "schema_version": 1
+}
+
