@@ -63,7 +63,29 @@ class CLITests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("value_mismatch", result.stdout)
 
+    def test_unexpected_answer_cannot_report_a_perfect_score(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            answers = Path(directory) / "answers.jsonl"
+            answers.write_text(
+                (ROOT / "examples" / "demo_answers.jsonl").read_text(encoding="utf-8")
+                + json.dumps({
+                    "case_id": "hallucinated-case",
+                    "block_number": "0x10",
+                    "block_hash": "0x" + "1" * 64,
+                    "value": 0,
+                })
+                + "\n",
+                encoding="utf-8",
+            )
+            result = self.run_cli(
+                "score", "examples/demo_bundle.json", str(answers), "--format", "json"
+            )
+            self.assertEqual(result.returncode, 1)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["failed"], 1)
+            self.assertEqual(report["score_percent"], 66.67)
+            self.assertEqual(report["results"][-1]["reasons"], ["unexpected_answer"])
+
 
 if __name__ == "__main__":
     unittest.main()
-

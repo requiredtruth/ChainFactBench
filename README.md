@@ -18,13 +18,18 @@ This is not another RPC throughput benchmark:
 
 The format follows [EIP-1474 quantity and block-identifier rules](https://eips.ethereum.org/EIPS/eip-1474). Exact-name GitHub search found no other public `ChainFactBench` repository when 0.1.0 was prepared. That is a naming fact, not a claim that chain evaluation itself has no prior art.
 
-## One-command verification
+## Start the desktop application
 
-Python 3.10+ and the standard library are sufficient:
+Python 3.10+ is required. The normal entry point installs or repairs the local
+environment when needed and opens the PySide6 control panel:
 
 ```bash
-./install.sh
+./run.sh
 ```
+
+The GUI provides live status and output for the bundled offline demo, the full
+test suite, installation/repair, and stop. Run `./demo.sh` for the same synthetic
+demo without opening a window, or use `./cli.sh` for CLI-only workflows.
 
 Expected final output:
 
@@ -66,7 +71,7 @@ Prefer the environment variable so an endpoint containing a provider token is no
 
 ```bash
 export CHAINFACT_RPC_URL='YOUR_READ_ONLY_RPC_ENDPOINT'
-./run.sh capture examples/capture_spec.json evidence.json
+./cli.sh capture examples/capture_spec.json evidence.json
 ```
 
 The endpoint is used in memory and is never written to the bundle or printed. Capture resolves `eth_chainId`, reads the block header, performs the cases with the explicit block number, then reads the header again. A changed hash aborts the capture.
@@ -74,7 +79,7 @@ The endpoint is used in memory and is never written to the bundle or printed. Ca
 ### 3. Produce model prompts
 
 ```bash
-./run.sh prompts evidence.json prompts.jsonl
+./cli.sh prompts evidence.json prompts.jsonl
 ```
 
 Prompt rows include the pinned evidence fields and required answer shape, but not expected values. Feed them to any local or external model under your own privacy policy. ChainFactBench itself makes no model request.
@@ -88,9 +93,9 @@ Each answer is one JSON object per line:
 ### 4. Score offline
 
 ```bash
-./run.sh verify evidence.json
-./run.sh score evidence.json answers.jsonl --no-color
-./run.sh score evidence.json answers.jsonl --format json
+./cli.sh verify evidence.json
+./cli.sh score evidence.json answers.jsonl --no-color
+./cli.sh score evidence.json answers.jsonl --format json
 ```
 
 Exit codes:
@@ -104,7 +109,7 @@ Exit codes:
 - `quantity` compares a canonical RPC quantity to a non-negative answer expressed as an integer, decimal string, or minimal `0x` quantity.
 - `json_exact` compares canonical sorted JSON, preserving type distinctions such as string versus integer.
 
-Every answer must also reproduce the bundle's block number and block hash. A correct value with wrong evidence fails.
+Every answer must also reproduce the bundle's block number and block hash. A correct value with wrong evidence fails. Unexpected case IDs are explicit failed rows and reduce the reported score rather than leaving a misleading perfect percentage.
 
 ## Stable errors handled
 
@@ -133,8 +138,11 @@ Input files, JSONL lines, case counts, prompts, timeouts, and RPC responses are 
 chainfactbench/     typed capture, validation, RPC, scoring, and CLI modules
 examples/           synthetic bundle, answers, and capture specification
 tests/              unit, CLI, mock-RPC integration, and release-boundary tests
-install.sh             syntax, full test suite, and offline end-to-end demo
-run.sh              location-independent CLI launcher
+install.sh          repeat-safe setup, verification, and PySide6 installation
+run.sh              normal PySide6 desktop entry point
+cli.sh              location-independent CLI launcher
+demo.sh             safe bundled offline demonstration
+test.sh             deterministic syntax and behavior checks
 PROJECT_SPEC.md     stable scope and acceptance contract
 ```
 
@@ -145,8 +153,3 @@ Donations fund additional production. After a transaction is confirmed, a donor 
 ## License
 
 Apache-2.0. See [`LICENSE`](LICENSE).
-
-
-## Standard launcher
-
-`./run.sh` is the normal entry point. It runs `./install.sh` automatically when setup is missing, then opens the PySide6 control panel with live output and actions for the demo, tests, repair, and stop. Use `./cli.sh` for CLI-only operation.

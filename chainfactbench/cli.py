@@ -134,7 +134,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             else:
                 color = sys.stdout.isatty() and not args.no_color and "NO_COLOR" not in os.environ
                 sys.stdout.write(render_table(report, color=color))
-            return 0 if report["failed"] == 0 and not report["unexpected_answer_ids"] else 1
+            return 0 if report["failed"] == 0 else 1
 
         if args.command == "demo":
             data = Path(__file__).resolve().parent / "data"

@@ -79,6 +79,29 @@ class ScoreTests(unittest.TestCase):
         )
         self.assertEqual(report["results"][1]["reasons"], ["missing_answer"])
 
+    def test_unexpected_answer_is_counted_as_a_failed_result(self) -> None:
+        answers = load_answers(ROOT / "examples" / "demo_answers.jsonl")
+        answers["hallucinated-case"] = {
+            "case_id": "hallucinated-case",
+            "block_number": "0x10",
+            "block_hash": "0x" + "1" * 64,
+            "value": 0,
+        }
+        report = score_answers(self.bundle, answers)
+        self.assertEqual(report["passed"], 2)
+        self.assertEqual(report["failed"], 1)
+        self.assertEqual(report["total"], 3)
+        self.assertEqual(report["score_percent"], 66.67)
+        self.assertEqual(report["unexpected_answer_ids"], ["hallucinated-case"])
+        self.assertEqual(
+            report["results"][-1],
+            {
+                "case_id": "hallucinated-case",
+                "reasons": ["unexpected_answer"],
+                "status": "fail",
+            },
+        )
+
     def test_duplicate_answer_is_rejected(self) -> None:
         row = {
             "block_hash": "0x" + "1" * 64,
@@ -95,4 +118,3 @@ class ScoreTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

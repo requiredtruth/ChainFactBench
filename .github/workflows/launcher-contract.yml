@@ -20,11 +20,30 @@ jobs:
           test -f install.sh
           test -f run.sh
           test -f cli.sh
+          test -f demo.sh
+          test -f test.sh
           test -f project_gui.py
           test ! -f doit.sh
-          bash -n install.sh run.sh cli.sh
+          bash -n install.sh run.sh cli.sh demo.sh test.sh
           python -m py_compile project_gui.py
           grep -q 'install.sh' run.sh
           grep -q 'project_gui.py' run.sh
           grep -qi 'PySide6' install.sh
           grep -q 'cli.sh' README.md
+          grep -q 'demo.sh' project_gui.py
+          grep -q 'test.sh' project_gui.py
+      - name: Install desktop application
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libegl1
+          ./install.sh
+      - name: Run bundled GUI demo
+        env:
+          QT_QPA_PLATFORM: offscreen
+          PROJECT_GUI_SMOKE: demo
+        run: ./run.sh
+      - name: Run tests through GUI
+        env:
+          QT_QPA_PLATFORM: offscreen
+          PROJECT_GUI_SMOKE: tests
+        run: ./run.sh

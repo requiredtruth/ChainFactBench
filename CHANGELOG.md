@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1 - 2026-09-20
+
+- Count unexpected answer IDs as explicit failed result rows so totals, percentages,
+  JSON fields, tables, and exit status agree.
+- Wire the PySide6 demo and test actions to real repeatable repository workflows.
+- Exercise installation and both GUI actions in the launcher workflow.
+
 ## 0.1.0 - 2026-08-24
 
 - Add explicit-block read-only EVM fact capture with before/after block-hash checks.

@@ -48,6 +48,7 @@ class ReleaseBoundaryTests(unittest.TestCase):
             if (
                 not path.is_file()
                 or ".git" in path.parts
+                or ".venv" in path.parts
                 or "__pycache__" in path.parts
                 or path.name == "LICENSE"
                 or path.suffix in {".pyc", ".pyo"}
