@@ -101,6 +101,14 @@ def score_answers(bundle: dict[str, Any], answers: dict[str, dict[str, Any]]) ->
                 "status": "pass" if not reasons else "fail",
             }
         )
+    for case_id in unexpected:
+        results.append(
+            {
+                "case_id": case_id,
+                "reasons": ["unexpected_answer"],
+                "status": "fail",
+            }
+        )
     passed = sum(item["status"] == "pass" for item in results)
     total = len(results)
     return {
@@ -140,4 +148,3 @@ def render_table(report: dict[str, Any], *, color: bool = False) -> str:
         f"unexpected={len(report['unexpected_answer_ids'])}"
     )
     return "\n".join(lines) + "\n"
-

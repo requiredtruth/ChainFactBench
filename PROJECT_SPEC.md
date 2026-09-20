@@ -1,4 +1,4 @@
-# ChainFactBench 0.1.0 Specification
+# ChainFactBench 0.1.1 Specification
 
 ## Outcome
 
@@ -24,7 +24,10 @@ Provide a zero-runtime-dependency Python CLI that captures allowlisted read-only
 | `prompts BUNDLE [OUTPUT]` | Emit answer-ready JSONL without expected values |
 | `score BUNDLE ANSWERS` | Produce deterministic table or JSON scoring and meaningful exit status |
 | `demo` | Run the synthetic offline end-to-end scoring path |
-| `doit.sh` | Compile, test, and run the demonstration from any working directory |
+| `run.sh` | Install when needed and open the PySide6 control panel |
+| `cli.sh` | Run the CLI from any working directory |
+| `demo.sh` | Run the bundled offline demonstration |
+| `test.sh` | Run deterministic syntax and behavior checks |
 
 ## Acceptance evidence
 
@@ -32,7 +35,7 @@ Provide a zero-runtime-dependency Python CLI that captures allowlisted read-only
 - Unit tests cover valid, malformed, mutable-tag, tampered-digest, duplicate, missing, wrong-value, and wrong-evidence inputs.
 - Mock-RPC integration proves the call sequence is read-only and the header is rechecked.
 - CLI tests prove machine-readable verification, expected-value-free prompts, failure exit status, and no redirected ANSI output.
-- A clean copy passes `./doit.sh` without a network request or third-party package.
+- A prepared copy passes `./demo.sh` and `./test.sh` without a network request.
 - Release files contain the exact authorized support addresses and no secret material.
 
 ## Non-goals
@@ -41,4 +44,3 @@ Provide a zero-runtime-dependency Python CLI that captures allowlisted read-only
 - Live monitoring, wallet analysis, transaction creation, or trading.
 - Declaring addresses or contracts malicious.
 - Replacing an Ethereum client, explorer, or RPC load tester.
-
